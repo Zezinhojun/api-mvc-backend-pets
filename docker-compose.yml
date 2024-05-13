@@ -1,14 +1,31 @@
-version: '3.8'
+version: '3.9'
+
 services:
-  db:
-    image: postgres:latest
-    container_name: api-mvc-backend-pets_db
+  node_app:
+    container_name: node_app
+    build: .
+    image: pets/node_live_app
+    ports:
+      - "3000:3000"
     environment:
-      POSTGRES_DB: database
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - PG_DB=node_live_db
+      - PG_USER=root
+      - PG_PASSWORD=postgres
+      - PG_HOST=node_db
+    depends_on:
+      - node_db
+    restart: always
+
+  node_db:
+    container_name: node_db
+    image: postgres:16
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_DB=node_live_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./data:/var/lib/postgresql/data
-      
+      - "node_db_data:/var/lib/postgresql/data"
+volumes:
+  node_db_data: {}

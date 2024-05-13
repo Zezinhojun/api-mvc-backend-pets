@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./../db');
+const db = require('../utils/database');
 
-const Owner = sequelize.define('Owner', {
+const Owner = db.define('Owner', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -10,13 +10,10 @@ const Owner = sequelize.define('Owner', {
     name: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    phoneNumber: {
+        type: DataTypes.STRING
     }
-});
-
-Owner.sync().then(() => {
-    console.log('Tabela Owners criada com sucesso.');
-}).catch((error) => {
-    console.error('Erro ao criar a tabela Owners:', error);
 });
 
 module.exports = Owner;

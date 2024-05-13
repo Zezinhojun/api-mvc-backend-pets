@@ -1,3 +1,4 @@
+const Owner = require("../models/ownerModel")
 const Pet = require("../models/petModel")
 
 //get all pets
@@ -65,6 +66,24 @@ const updatePet = async (req, res) => {
     }
 };
 
+//get owner of pet
+const getOwnerOfPet = async (req, res) => {
+    try {
+        const { petId } = req.params
+        const petWithOwner = await Pet.findOne({
+            where: { id: petId },
+            include: [{
+                model: Owner,
+                as: 'owner'
+            }]
+        })
+        if (!petWithOwner) return res.status(404).json({ message: "Pet not found" });
+        res(petWithOwner)
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 
 
 module.exports = {
@@ -72,5 +91,6 @@ module.exports = {
     createPets,
     deleteOnePet,
     updatePet,
-    getOnePet
+    getOnePet,
+    getOwnerOfPet
 }

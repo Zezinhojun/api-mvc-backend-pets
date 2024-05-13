@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllPets, getOnePet, createPets, deleteOnePet, updatePet } = require('../controllers/petController')
+const { getAllPets, getOnePet, createPets, deleteOnePet, updatePet, getOwnerOfPet } = require('../controllers/petController')
 const router = express.Router()
 
 //get all pets
@@ -16,5 +16,8 @@ router.put('/:id', updatePet);
 
 //delete one pet
 router.delete('/:id', deleteOnePet)
+
+//get owner of pets
+router.get('/:petId', getOwnerOfPet)
 
 module.exports = router

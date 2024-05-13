@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./../db');
+const db = require('../utils/database');
 const Owner = require('./ownerModel');
 
 // Remova a definição da coluna ownerId do modelo Pet
-const Pet = sequelize.define('Pet', {
+const Pet = db.define('Pet', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -28,11 +28,5 @@ const Pet = sequelize.define('Pet', {
 // Defina a associação e especifique o nome da coluna da chave estrangeira
 Pet.belongsTo(Owner, { as: 'owner', foreignKey: 'ownerId' });
 Owner.hasMany(Pet, { as: 'pets', foreignKey: 'ownerId' });
-
-sequelize.sync()
-    .then(() => console.log('Tabela Pet sincronizada com sucesso.'))
-    .catch(error => console.error('Erro ao sincronizar a tabela Pet:', error));
-
-
 
 module.exports = Pet;

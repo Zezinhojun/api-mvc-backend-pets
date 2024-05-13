@@ -4,8 +4,8 @@ const Pet = require("../models/petModel")
 //create owner
 const createOwner = async (req, res) => {
     try {
-        const { name } = req.body
-        const owner = await Owner.create({ name })
+        const { name, phoneNumber } = req.body
+        const owner = await Owner.create({ name, phoneNumber })
         res.status(200).json(owner)
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -68,12 +68,10 @@ const getAllPetsOfOwner = async (req, res) => {
     try {
         const ownerWithPets = await Owner.findOne({
             where: { id },
-            include: [
-                {
-                    model: Pet,
-                    as: 'pets',
-                    attributes: ['id', 'name', 'breed', 'age']
-                }
+            include: [{
+                model: Pet,
+                as: 'pets',
+            }
             ]
         });
         res.json(ownerWithPets);
